@@ -139,7 +139,7 @@ module.exports =
                         return css.push(value);
                       },
                       onSetTitle: function onSetTitle(value) {
-                        data.title = value;console.log('title value', value);
+                        data.title = value;console.log('AMIT: title value', value);
                       },
                       onSetMeta: function onSetMeta(key, value) {
                         return data[key] = value;
@@ -187,7 +187,7 @@ module.exports =
   // -----------------------------------------------------------------------------
 
   server.listen(server.get('port'), function () {
-    console.log('amit');
+    console.log('AMIT: Listening to port:', server.get('port'));
     if (process.send) {
       console.log('online');
       process.send('online');
@@ -5187,6 +5187,7 @@ module.exports =
       key: 'render',
       value: function render() {
         this.context.onSetTitle(this.props.title);
+        console.log('AMIT: content render:', this.props.path, this.props.title);
         return _react2['default'].createElement(
           'div',
           { className: 'ContentPage' },
