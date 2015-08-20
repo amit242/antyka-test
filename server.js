@@ -2106,7 +2106,7 @@ module.exports =
             'form',
             null,
             _react2['default'].createElement(
-              'h1',
+              'b',
               null,
               title
             ),
