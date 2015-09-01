@@ -463,55 +463,67 @@ module.exports =
   });
 
   apiRoutes.get('/neighbourhoods', function (req, res) {
-    // console.log('get users called');
-
     _modelsNeighbourhood2['default'].find({}).exec(function (err, neighbourhoods) {
       if (err) {
-        console.log('neighbourhoods mongoDB error:', err);
-        res.json({ success: false, message: 'Neighbourhoods not found.' });
+        console.log('GET: /neighbourhoods -> mongoDB error:', err);
+        res.status(404).json({ success: false, message: 'Neighbourhoods not found.' });
       } else {
-        console.log('getting neighbourhoods', neighbourhoods);
+        console.log('GET: /neighbourhoods -> fetched neighbourhoods:', neighbourhoods);
         res.json({ success: true, neighbourhoods: neighbourhoods });
       }
     });
     return res;
   });
 
-  apiRoutes.post('/neighbourhood', function (req, res) {
+  apiRoutes.get('/neighbourhood/:neighbourhood_id', function (req, res) {
+    var neighbourhood_id = req.params.neighbourhood_id;
+    console.log('GET: /neighbourhood -> neighbourhood id:', neighbourhood_id);
+    _modelsNeighbourhood2['default'].find({ _id: neighbourhood_id }).exec(function (err, neighbourhood) {
+      if (err) {
+        console.log('neighbourhoods mongoDB error:', err);
+        res.status(404).json({ success: false, message: 'Neighbourhood not found.' });
+      } else {
+        console.log('getting neighbourhoods', neighbourhood);
+        res.json({ success: true, neighbourhoods: neighbourhood });
+      }
+    });
+    return res;
+  });
+
+  apiRoutes.post('/neighbourhood/:neighbourhood_id*?', function (req, res) {
     // console.log('get users called');
     var neighbourhood = JSON.parse(req.body.neighbourhood);
     var userid = req.body.userid;
     var neighbourhood_id = req.params.neighbourhood_id;
-    console.log('REST call: /neighbourhood -> neighbourhood: ', neighbourhood);
-
+    console.log('POST: /neighbourhood -> neighbourhood: ', neighbourhood);
+    console.log('POST: /neighbourhood -> neighbourhood id:', neighbourhood_id);
     if (neighbourhood_id) {
-      console.log('REST call: /neighbourhood -> neighbourhood id:', neighbourhood_id);
       _modelsNeighbourhood2['default'].findOne({
         neighbourhoodid: neighbourhood_id
       }).exec(function (err, neighbourhood) {
         if (err) {
-          console.log('REST call: /neighbourhood -> neighbourhood mongoDB error:', err);
+          console.log('POST: /neighbourhood -> neighbourhood mongoDB error:', err);
           res.status(500).json({ success: false, message: 'Neighbourhood not found.' });
         } else {
-          console.log('REST call: /neighbourhood -> updating neighbourhood', neighbourhood);
+          console.log('POST: /neighbourhood -> updating neighbourhood', neighbourhood);
 
           res.json(neighbourhood);
         }
       });
     } else {
-      console.log('REST call: /neighbourhood -> neighbourhood polygon: ', neighbourhood.encodedpolygon);
+      console.log('POST: /neighbourhood -> neighbourhood polygon: ', neighbourhood.encodedpolygon);
       neighbourhood.createdby = userid;
       _modelsNeighbourhood2['default'].create(neighbourhood, function (err, neighbourhood) {
         if (err) {
-          console.log('REST call: /neighbourhood -> neighbourhood mongoDB error:', err);
+          console.log('POST: /neighbourhood -> neighbourhood mongoDB error:', err);
           res.status(500).json({ success: false, message: 'Could not create neighbourhood.' });
         } else {
-          console.log('REST call: /neighbourhood -> neighbourhood created', neighbourhood);
-
+          console.log('POST: /neighbourhood -> neighbourhood created:', neighbourhood);
+          console.log('POST: /neighbourhood -> Updating user:', userid);
           var query = { _id: userid };
 
           _modelsUser2['default'].findOneAndUpdate(query, { $set: { neighbourhood: neighbourhood._id } }, function (updateError, numRow) {
-            console.log('REST call: /neighbourhood ->  mongoDB update:', numRow, updateError);
+            console.log('POST: /neighbourhood ->  mongoDB update:', numRow, updateError);
             if (updateError) {
               res.status(500).json({ success: false, message: 'Neighbourhood created and user could not be set', neighbourhood: neighbourhood, error: updateError });
             }
@@ -524,7 +536,7 @@ module.exports =
   });
 
   apiRoutes.get('/users', function (req, res) {
-    // console.log('get users called');
+    // console.log('get users call (POST)ed');
 
     _modelsUser2['default'].find({}).exec(function (err, users) {
       if (err) {}
@@ -861,7 +873,7 @@ module.exports =
 
   var _node_modulesReactLibInvariant2 = _interopRequireDefault(_node_modulesReactLibInvariant);
 
-  var _node_modulesReactLibExecutionEnvironment = __webpack_require__(17);
+  var _node_modulesReactLibExecutionEnvironment = __webpack_require__(24);
 
   var count = 0;
 
@@ -937,7 +949,7 @@ module.exports =
         }, {
           key: 'render',
           value: function render() {
-            // console.log'withStyles called:', ComposedComponent)
+            //console.log('withStyles called:', this.props);
             return _react2['default'].createElement(ComposedComponent, this.props);
           }
         }]);
@@ -1204,6 +1216,30 @@ module.exports =
 
 /***/ },
 /* 16 */
+/***/ function(module, exports) {
+
+  module.exports = require("classnames");
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+  var ctx  = __webpack_require__(14)
+    , get  = __webpack_require__(12).get
+    , call = __webpack_require__(52);
+  module.exports = function(iterable, entries, fn, that){
+    var iterator = get(iterable)
+      , f        = ctx(fn, that, entries ? 2 : 1)
+      , step;
+    while(!(step = iterator.next()).done){
+      if(call(iterator, f, step.value, entries) === false){
+        return call.close(iterator);
+      }
+    }
+  };
+
+/***/ },
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1224,7 +1260,7 @@ module.exports =
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _classnames = __webpack_require__(18);
+  var _classnames = __webpack_require__(16);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -1279,79 +1315,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 17 */
-/***/ function(module, exports) {
-
-  /**
-   * Copyright 2013-2015, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the BSD-style license found in the
-   * LICENSE file in the root directory of this source tree. An additional grant
-   * of patent rights can be found in the PATENTS file in the same directory.
-   *
-   * @providesModule ExecutionEnvironment
-   */
-
-  /*jslint evil: true */
-
-  "use strict";
-
-  var canUseDOM = !!(
-    (typeof window !== 'undefined' &&
-    window.document && window.document.createElement)
-  );
-
-  /**
-   * Simple, lightweight module assisting with the detection and context of
-   * Worker. Helps avoid circular dependencies and allows code to reason about
-   * whether or not they are in a Worker, even if they never include the main
-   * `ReactWorker` dependency.
-   */
-  var ExecutionEnvironment = {
-
-    canUseDOM: canUseDOM,
-
-    canUseWorkers: typeof Worker !== 'undefined',
-
-    canUseEventListeners:
-      canUseDOM && !!(window.addEventListener || window.attachEvent),
-
-    canUseViewport: canUseDOM && !!window.screen,
-
-    isInWorker: !canUseDOM // For now, this is true - might change in the future.
-
-  };
-
-  module.exports = ExecutionEnvironment;
-
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-  module.exports = require("classnames");
-
-/***/ },
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-  var ctx  = __webpack_require__(14)
-    , get  = __webpack_require__(12).get
-    , call = __webpack_require__(52);
-  module.exports = function(iterable, entries, fn, that){
-    var iterator = get(iterable)
-      , f        = ctx(fn, that, entries ? 2 : 1)
-      , step;
-    while(!(step = iterator.next()).done){
-      if(call(iterator, f, step.value, entries) === false){
-        return call.close(iterator);
-      }
-    }
-  };
-
-/***/ },
-/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
   /*! React Starter Kit | MIT License | http://www.reactstarterkit.com/ */
@@ -1380,7 +1344,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1405,7 +1369,7 @@ module.exports =
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _storesLoginStore = __webpack_require__(24);
+  var _storesLoginStore = __webpack_require__(23);
 
   var _storesLoginStore2 = _interopRequireDefault(_storesLoginStore);
 
@@ -1413,7 +1377,7 @@ module.exports =
 
   var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 
-  var _reactLibExecutionEnvironment = __webpack_require__(17);
+  var _reactLibExecutionEnvironment = __webpack_require__(24);
 
   function withAuthentication(ComposedComponent) {
     return (function (_React$Component) {
@@ -1497,7 +1461,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1512,7 +1476,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1667,7 +1631,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1686,7 +1650,7 @@ module.exports =
 
   function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-  var _constantsActionTypes = __webpack_require__(20);
+  var _constantsActionTypes = __webpack_require__(19);
 
   var _constantsActionTypes2 = _interopRequireDefault(_constantsActionTypes);
 
@@ -1768,6 +1732,54 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
+/* 24 */
+/***/ function(module, exports) {
+
+  /**
+   * Copyright 2013-2015, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the BSD-style license found in the
+   * LICENSE file in the root directory of this source tree. An additional grant
+   * of patent rights can be found in the PATENTS file in the same directory.
+   *
+   * @providesModule ExecutionEnvironment
+   */
+
+  /*jslint evil: true */
+
+  "use strict";
+
+  var canUseDOM = !!(
+    (typeof window !== 'undefined' &&
+    window.document && window.document.createElement)
+  );
+
+  /**
+   * Simple, lightweight module assisting with the detection and context of
+   * Worker. Helps avoid circular dependencies and allows code to reason about
+   * whether or not they are in a Worker, even if they never include the main
+   * `ReactWorker` dependency.
+   */
+  var ExecutionEnvironment = {
+
+    canUseDOM: canUseDOM,
+
+    canUseWorkers: typeof Worker !== 'undefined',
+
+    canUseEventListeners:
+      canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+    canUseViewport: canUseDOM && !!window.screen,
+
+    isInWorker: !canUseDOM // For now, this is true - might change in the future.
+
+  };
+
+  module.exports = ExecutionEnvironment;
+
+
+/***/ },
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1820,7 +1832,7 @@ module.exports =
   var $     = __webpack_require__(1)
     , $def  = __webpack_require__(2)
     , BUGGY = __webpack_require__(12).BUGGY
-    , forOf = __webpack_require__(19)
+    , forOf = __webpack_require__(17)
     , species = __webpack_require__(29)
     , assertInstance = __webpack_require__(6).inst;
 
@@ -2148,7 +2160,7 @@ module.exports =
 
   var _servicesRouterContainer2 = _interopRequireDefault(_servicesRouterContainer);
 
-  var _storesLoginStore = __webpack_require__(24);
+  var _storesLoginStore = __webpack_require__(23);
 
   // import Link from '../../utils/Link';
   // import AppActions from '../../actions/AppActions';
@@ -2237,19 +2249,19 @@ module.exports =
 
   var _RegisterPageLess2 = _interopRequireDefault(_RegisterPageLess);
 
-  var _TextBox = __webpack_require__(16);
+  var _TextBox = __webpack_require__(18);
 
   var _TextBox2 = _interopRequireDefault(_TextBox);
 
-  var _classnames = __webpack_require__(18);
+  var _classnames = __webpack_require__(16);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
-  var _servicesAuthService = __webpack_require__(23);
+  var _servicesAuthService = __webpack_require__(22);
 
   var _servicesAuthService2 = _interopRequireDefault(_servicesAuthService);
 
-  var _storesLoginStore = __webpack_require__(24);
+  var _storesLoginStore = __webpack_require__(23);
 
   var _storesLoginStore2 = _interopRequireDefault(_storesLoginStore);
 
@@ -2411,7 +2423,7 @@ module.exports =
 
   var _events = __webpack_require__(42);
 
-  var _dispatchersDispatcher = __webpack_require__(22);
+  var _dispatchersDispatcher = __webpack_require__(21);
 
   var _dispatchersDispatcher2 = _interopRequireDefault(_dispatchersDispatcher);
 
@@ -2508,7 +2520,7 @@ module.exports =
     , ctx      = __webpack_require__(14)
     , safe     = __webpack_require__(11).safe
     , assert   = __webpack_require__(6)
-    , forOf    = __webpack_require__(19)
+    , forOf    = __webpack_require__(17)
     , step     = __webpack_require__(12).step
     , $has     = $.has
     , set      = $.set
@@ -2665,7 +2677,7 @@ module.exports =
 
   // https://github.com/DavidBruant/Map-Set.prototype.toJSON
   var $def  = __webpack_require__(2)
-    , forOf = __webpack_require__(19);
+    , forOf = __webpack_require__(17);
   module.exports = function(NAME){
     $def($def.P, NAME, {
       toJSON: function toJSON(){
@@ -2684,7 +2696,7 @@ module.exports =
   var $         = __webpack_require__(1)
     , safe      = __webpack_require__(11).safe
     , assert    = __webpack_require__(6)
-    , forOf     = __webpack_require__(19)
+    , forOf     = __webpack_require__(17)
     , $has      = $.has
     , isObject  = $.isObject
     , hide      = $.hide
@@ -3046,11 +3058,11 @@ module.exports =
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-  var _dispatchersDispatcher = __webpack_require__(22);
+  var _dispatchersDispatcher = __webpack_require__(21);
 
   var _dispatchersDispatcher2 = _interopRequireDefault(_dispatchersDispatcher);
 
-  var _constantsActionTypes = __webpack_require__(20);
+  var _constantsActionTypes = __webpack_require__(19);
 
   var _constantsActionTypes2 = _interopRequireDefault(_constantsActionTypes);
 
@@ -3156,7 +3168,7 @@ module.exports =
 
   var _reactRouter = __webpack_require__(10);
 
-  var _storesLoginStore = __webpack_require__(24);
+  var _storesLoginStore = __webpack_require__(23);
 
   var _storesLoginStore2 = _interopRequireDefault(_storesLoginStore);
 
@@ -3164,7 +3176,7 @@ module.exports =
 
   var _storesAppStore2 = _interopRequireDefault(_storesAppStore);
 
-  var _servicesAuthService = __webpack_require__(23);
+  var _servicesAuthService = __webpack_require__(22);
 
   var _servicesAuthService2 = _interopRequireDefault(_servicesAuthService);
 
@@ -3196,9 +3208,9 @@ module.exports =
 
   var _LoginPage2 = _interopRequireDefault(_LoginPage);
 
-  var _reactLibExecutionEnvironment = __webpack_require__(17);
+  var _reactLibExecutionEnvironment = __webpack_require__(24);
 
-  var _decoratorsWithAuthentication = __webpack_require__(21);
+  var _decoratorsWithAuthentication = __webpack_require__(20);
 
   var _decoratorsWithAuthentication2 = _interopRequireDefault(_decoratorsWithAuthentication);
 
@@ -3328,7 +3340,7 @@ module.exports =
 
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
 
-  var _decoratorsWithAuthentication = __webpack_require__(21);
+  var _decoratorsWithAuthentication = __webpack_require__(20);
 
   var _decoratorsWithAuthentication2 = _interopRequireDefault(_decoratorsWithAuthentication);
 
@@ -3482,7 +3494,7 @@ module.exports =
 
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
 
-  var _decoratorsWithAuthentication = __webpack_require__(21);
+  var _decoratorsWithAuthentication = __webpack_require__(20);
 
   var _decoratorsWithAuthentication2 = _interopRequireDefault(_decoratorsWithAuthentication);
 
@@ -3595,7 +3607,8 @@ module.exports =
   var _reactLibKeyMirror2 = _interopRequireDefault(_reactLibKeyMirror);
 
   exports['default'] = (0, _reactLibKeyMirror2['default'])({
-    FIND_NEIGHBOURHOOD: null
+    LOAD_NEIGHBOURHOOD: null,
+    SEARCH_NEIGHBOURHOOD: null
   });
   module.exports = exports['default'];
 
@@ -3633,7 +3646,7 @@ module.exports =
 
   var _Dispatcher2 = _interopRequireDefault(_Dispatcher);
 
-  var _constantsActionTypes = __webpack_require__(20);
+  var _constantsActionTypes = __webpack_require__(19);
 
   var _constantsActionTypes2 = _interopRequireDefault(_constantsActionTypes);
 
@@ -3717,7 +3730,7 @@ module.exports =
 
   var _events2 = _interopRequireDefault(_events);
 
-  var _node_modulesReactLibExecutionEnvironment = __webpack_require__(17);
+  var _node_modulesReactLibExecutionEnvironment = __webpack_require__(24);
 
   var eventEmitter = undefined;
   var viewport = { width: 1366, height: 768 }; // Default size for server-side rendering
@@ -3848,8 +3861,30 @@ module.exports =
         });
       }
     }, {
+      key: 'searchNeighbourhoodById',
+      value: function searchNeighbourhoodById(id, errorCb) {
+        console.log('NeighbourhoodService.searchNeighbourhoodById()| neighbourhood', id);
+        var jwt = localStorage.getItem('closyaar-jwt');
+
+        _superagent2['default'].get('/api/neighbourhood/' + id).type('form').set('Accept', 'application/json').set('x-closyaar-access-token', jwt).end(function (err, response) {
+          console.log('NeighbourhoodService.searchNeighbourhoodById()|  err, response', err, response);
+          if (!err && response && response.body && response.body.success) {
+            console.log('NeighbourhoodService.searchNeighbourhoodById()| neighbourhood found!!!');
+            // We get a JWT back.
+            ///let jwt = response.body.token;
+            // We trigger the LoginAction with that JWT.
+            // TODO: may want to review this
+            _actionsNeighbourhoodAction2['default'].searchNeighbourhood(response.body.neighbourhoods);
+            return true;
+          } else {
+            console.log('NeighbourhoodService.searchNeighbourhoodById()| neighbourhood search failed!!!');
+            errorCb(err);
+          }
+        });
+      }
+    }, {
       key: 'findNeighbourhoodsByViewport',
-      value: function findNeighbourhoodsByViewport(mapViewport) {
+      value: function findNeighbourhoodsByViewport(mapViewport, errorCb) {
 
         console.log('NeighbourhoodService.findNeighbourhoodsByViewport()| neighbourhood', mapViewport);
         var jwt = localStorage.getItem('closyaar-jwt');
@@ -3864,7 +3899,7 @@ module.exports =
             ///let jwt = response.body.token;
             // We trigger the LoginAction with that JWT.
             // TODO: may want to review this
-            _actionsNeighbourhoodAction2['default'].fetchNeighbourhood(response.body.neighbourhoods);
+            _actionsNeighbourhoodAction2['default'].fetchNeighbourhoods(response.body.neighbourhoods);
             return true;
           } else {
             console.log('NeighbourhoodService.findNeighbourhoodsByViewport()| neighbourhood search failed!!!');
@@ -4989,7 +5024,7 @@ module.exports =
     , cof      = __webpack_require__(7)
     , $def     = __webpack_require__(2)
     , assert   = __webpack_require__(6)
-    , forOf    = __webpack_require__(19)
+    , forOf    = __webpack_require__(17)
     , setProto = __webpack_require__(34).set
     , same     = __webpack_require__(54)
     , species  = __webpack_require__(29)
@@ -6818,13 +6853,13 @@ module.exports =
 
   var _superagent2 = _interopRequireDefault(_superagent);
 
-  var _reactLibExecutionEnvironment = __webpack_require__(17);
+  var _reactLibExecutionEnvironment = __webpack_require__(24);
 
-  var _dispatchersDispatcher = __webpack_require__(22);
+  var _dispatchersDispatcher = __webpack_require__(21);
 
   var _dispatchersDispatcher2 = _interopRequireDefault(_dispatchersDispatcher);
 
-  var _constantsActionTypes = __webpack_require__(20);
+  var _constantsActionTypes = __webpack_require__(19);
 
   var _constantsActionTypes2 = _interopRequireDefault(_constantsActionTypes);
 
@@ -6885,7 +6920,7 @@ module.exports =
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-  var _dispatchersDispatcher = __webpack_require__(22);
+  var _dispatchersDispatcher = __webpack_require__(21);
 
   var _dispatchersDispatcher2 = _interopRequireDefault(_dispatchersDispatcher);
 
@@ -6894,16 +6929,29 @@ module.exports =
   var _constantsNeighbourhoodActionTypes2 = _interopRequireDefault(_constantsNeighbourhoodActionTypes);
 
   exports['default'] = {
-    fetchNeighbourhood: function fetchNeighbourhood(neighbourhoods) {
+    fetchNeighbourhoods: function fetchNeighbourhoods(neighbourhoods) {
       console.log('NeighbourhoodAction.fetchNeighbourhood()| fetched neighbourhoods:', neighbourhoods);
 
       if (neighbourhoods) {
         _dispatchersDispatcher2['default'].dispatch({
-          type: _constantsNeighbourhoodActionTypes2['default'].FIND_NEIGHBOURHOOD,
+          type: _constantsNeighbourhoodActionTypes2['default'].LOAD_NEIGHBOURHOOD,
           neighbourhoods: neighbourhoods
         });
       } else {
         console.log('NeighbourhoodAction.fetchNeighbourhood()| Fetch Fail!!!');
+      }
+    },
+
+    searchNeighbourhood: function searchNeighbourhood(neighbourhood) {
+      console.log('NeighbourhoodAction.searchNeighbourhood()| searched neighbourhood:', neighbourhood);
+
+      if (neighbourhood) {
+        _dispatchersDispatcher2['default'].dispatch({
+          type: _constantsNeighbourhoodActionTypes2['default'].SEARCH_NEIGHBOURHOOD,
+          neighbourhood: neighbourhood
+        });
+      } else {
+        console.log('NeighbourhoodAction.searchNeighbourhood()| Search Fail!!!');
       }
     }
   };
@@ -7291,19 +7339,19 @@ module.exports =
 
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
 
-  var _TextBox = __webpack_require__(16);
+  var _TextBox = __webpack_require__(18);
 
   var _TextBox2 = _interopRequireDefault(_TextBox);
 
   var _reactRouter = __webpack_require__(10);
 
-  var _classnames = __webpack_require__(18);
+  var _classnames = __webpack_require__(16);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
   //import AppActions from '../../actions/AppActions';
 
-  var _servicesAuthService = __webpack_require__(23);
+  var _servicesAuthService = __webpack_require__(22);
 
   var _servicesAuthService2 = _interopRequireDefault(_servicesAuthService);
 
@@ -7433,6 +7481,8 @@ module.exports =
     value: true
   });
 
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
   var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -7455,11 +7505,11 @@ module.exports =
 
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
 
-  var _decoratorsWithAuthentication = __webpack_require__(21);
+  var _decoratorsWithAuthentication = __webpack_require__(20);
 
   var _decoratorsWithAuthentication2 = _interopRequireDefault(_decoratorsWithAuthentication);
 
-  var _TextBox = __webpack_require__(16);
+  var _TextBox = __webpack_require__(18);
 
   var _TextBox2 = _interopRequireDefault(_TextBox);
 
@@ -7494,10 +7544,7 @@ module.exports =
       this.state = {
         lat: '',
         lng: '',
-        position: {
-          lat: '',
-          lng: ''
-        },
+        position: null,
         neighbourhood: null,
         googleMapLoaded: false,
         drawMode: false
@@ -7523,20 +7570,6 @@ module.exports =
       }
     }, {
       key: 'findLocation',
-
-      // shouldComponentUpdate(nextProps, nextStates) {
-      //   // console.log('MapPage.shouldComponentUpdate()| existing props:', this.props);
-      //   // console.log('MapPage.shouldComponentUpdate()| nextProps:', nextProps);
-      //   console.log('MapPage.shouldComponentUpdate()| result:', this.state.position !== nextStates.position);
-
-      //   console.log('MapPage.shouldComponentUpdate()| this.state:', this.state.position);
-      //   console.log('MapPage.shouldComponentUpdate()| nextStates:', nextStates.position);
-
-      //   //console.log('MapPage.shouldComponentUpdate()| context:', this.context);
-      //   //return this.props.position !== nextProps.position;
-      //   return true;
-      // }
-
       value: function findLocation(event) {
         //console.log('AMIT click:', this.state.position);
         //let pos = this.state.position;
@@ -7548,7 +7581,7 @@ module.exports =
     }, {
       key: 'findCurrentLocation',
       value: function findCurrentLocation(event) {
-        this.setState({ position: { lat: '', lng: '' } });
+        this.setState({ position: null });
       }
     }, {
       key: 'findLocationByAddress',
@@ -7561,8 +7594,8 @@ module.exports =
           if (status == google.maps.GeocoderStatus.OK) {
             console.debug('GEOCODER LOCATION: ', results[0].geometry.location, status);
             //map.setCenter(results[0].geometry.location);
-            var lat = results[0].geometry.location.A;
-            var lng = results[0].geometry.location.F;
+            var lat = results[0].geometry.location.lat();
+            var lng = results[0].geometry.location.lng();
             _this.setState({ position: { lat: lat, lng: lng } });
             // var marker = new google.maps.Marker({
             //     map: map,
@@ -7585,7 +7618,7 @@ module.exports =
       key: 'saveNeighbourhood',
       value: function saveNeighbourhood(event) {
         console.log('saveNeighbourhood()|', this.state.neighbourhood);
-        _servicesNeighbourhoodService2['default'].saveNeighbourhood({ encodedpolygon: this.state.neighbourhood.encodedpolygon }, this.props.user.id, function (error) {
+        _servicesNeighbourhoodService2['default'].saveNeighbourhood({ encodedpolygon: this.state.neighbourhood.encodedpolygon }, this.props.user._id, function (error) {
           alert(error);
         });
       }
@@ -7608,7 +7641,8 @@ module.exports =
     }, {
       key: 'render',
       value: function render() {
-        console.debug('MapPage.render()| state:', this.props);
+        console.debug('MapPage.render()| state:', this.state);
+        console.debug('MapPage.render()| props:', this.props);
         //let title = this.props.user.name;
         this.context.onSetTitle('Map');
         return _react2['default'].createElement(
@@ -7637,7 +7671,7 @@ module.exports =
               _react2['default'].createElement('input', { type: 'button', value: 'Save Neighbourhood', disabled: !(this.state.neighbourhood && this.state.neighbourhood.isValid), onClick: this.saveNeighbourhood.bind(this) })
             )
           ),
-          this.state.googleMapLoaded && _react2['default'].createElement(_Map2['default'], { position: this.state.position, drawMode: this.state.drawMode, onNeighbourhoodChange: this.onNeighbourhoodChange.bind(this) })
+          this.state.googleMapLoaded && _react2['default'].createElement(_Map2['default'], _extends({}, this.props, { position: this.state.position, drawMode: this.state.drawMode, onNeighbourhoodChange: this.onNeighbourhoodChange.bind(this) }))
         );
       }
     }]);
@@ -7787,7 +7821,7 @@ module.exports =
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _classnames = __webpack_require__(18);
+  var _classnames = __webpack_require__(16);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -7799,15 +7833,13 @@ module.exports =
 
   var _MapLess2 = _interopRequireDefault(_MapLess);
 
-  var _TextBox = __webpack_require__(16);
-
-  var _TextBox2 = _interopRequireDefault(_TextBox);
+  //import TextBox from '../TextBox';
 
   var _AntykaGeometry = __webpack_require__(137);
 
   var _AntykaGeometry2 = _interopRequireDefault(_AntykaGeometry);
 
-  var _reactLibExecutionEnvironment = __webpack_require__(17);
+  //import { canUseDOM } from 'react/lib/ExecutionEnvironment';
 
   var _servicesNeighbourhoodService = __webpack_require__(66);
 
@@ -7827,13 +7859,17 @@ module.exports =
     _createClass(Map, null, [{
       key: 'propTypes',
       value: {
-        position: _react.PropTypes.instanceOf(Object).isRequired,
-        drawMode: _react.PropTypes.bool.isRequired
+        position: _react.PropTypes.instanceOf(Object),
+        drawMode: _react.PropTypes.bool.isRequired,
+        onNeighbourhoodChange: _react2['default'].PropTypes.func.isRequired,
+        className: _react.PropTypes.string
       },
       enumerable: true
     }, {
       key: 'defaultProps',
-      value: {},
+      value: {
+        position: null
+      },
       enumerable: true
     }]);
 
@@ -7852,67 +7888,16 @@ module.exports =
     }
 
     _createClass(Map, [{
-      key: 'renderExistingNeighbourhoods',
-      value: function renderExistingNeighbourhoods() {
-        var map = this.state.map;
-        if (map) {
-          console.debug('Rendering Existing Neighbourhoods...');
-          _lodash2['default'].forEach(this.state.existingPolygons, function (polygon) {
-            polygon.setMap(map);
-          });
-        }
+      key: 'shouldComponentUpdate',
 
-        //---------------------------------
-      }
-    }, {
-      key: '_onNeighbourhoodStoreChange',
-      value: function _onNeighbourhoodStoreChange() {
-        this.loadExistingPolygons();
-      }
-    }, {
-      key: 'loadExistingPolygons',
-      value: function loadExistingPolygons() {
-        console.log('Map.loadExistingPolygons():');
-
-        var existingPolygons = [];
-        var encodedNeighbourhoods = _storesNeighbourhoodStore2['default'].getNeighbourhoods();
-
-        _lodash2['default'].forEach(encodedNeighbourhoods, function (encodedNeighbourhood) {
-          console.log('Map.loadExistingPolygons() encodedNeighbourhood:', encodedNeighbourhood, google.maps.geometry);
-          var decodedPath = google.maps.geometry.encoding.decodePath(encodedNeighbourhood.encodedpolygon);
-          console.log('Map.loadExistingPolygons() decodedNeighbourhood:', decodedPath);
-          var poly = new google.maps.Polygon({
-            paths: decodedPath,
-            strokeColor: '#008888',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            zIndex: 2
-          });
-
-          existingPolygons.push(poly);
-        });
-        /*
-        let triangleCoords = [
-          {lat: 22.692646, lng: 88.380895},
-          {lat: 22.692646, lng: 88.373897},
-          {lat: 22.700649, lng: 88.373897},
-          {lat: 22.700649, lng: 88.380895}
-        ];
-         
-         let poly = new google.maps.Polygon({
-          paths: triangleCoords,
-          strokeColor: '#008888',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#FF0000',
-          fillOpacity: 0.35,
-          zIndex: 2
-        });
-        existingPolygons.push(poly);*/
-
-        this.setState({ existingPolygons: existingPolygons });
+      // Life cycle methods
+      value: function shouldComponentUpdate(nextProps, nextStates) {
+        console.log('shouldComponentUpdate() position:', this.props.position, nextProps.position, _lodash2['default'].isEqual(this.props.position, nextProps.position));
+        console.log('shouldComponentUpdate() drawMode:', this.props.drawMode, nextProps.drawMode, this.props.drawMode !== nextProps.drawMode);
+        console.log('shouldComponentUpdate() existingPolygons:', this.state.existingPolygons, nextStates.existingPolygons, this.state.existingPolygons !== nextStates.existingPolygons);
+        //return this.props.position !== nextProps.position || this.props.drawMode !== nextProps.drawMode;
+        // TODO: need a more gracefull way to do this
+        return !_lodash2['default'].isEqual(this.props.position, nextProps.position) || this.props.drawMode !== nextProps.drawMode || this.state.existingPolygons !== nextStates.existingPolygons;
       }
     }, {
       key: 'componentWillUnmount',
@@ -7921,14 +7906,19 @@ module.exports =
       }
     }, {
       key: 'componentDidMount',
-      value: function componentDidMount(rootNode) {
-        console.log('Map.componentDidMount()| position:', this.props.position);
+      value: function componentDidMount() {
+        console.log('Map.componentDidMount()| props:', this.props);
 
-        this.neighbourhoodStoreListener = this._onNeighbourhoodStoreChange.bind(this);
+        this.neighbourhoodStoreListener = this.onNeighbourhoodStoreChange.bind(this);
         _storesNeighbourhoodStore2['default'].addChangeListener(this.neighbourhoodStoreListener);
 
         _servicesNeighbourhoodService2['default'].findNeighbourhoodsByViewport();
 
+        /*
+            if(this.props.user.neighbourhood) {
+              NeighbourhoodService.searchNeighbourhoodById(this.props.user.neighbourhood);
+            }
+        */
         var mapOptions = {
           center: { lat: -34.397, lng: 150.644 },
           zoom: 15,
@@ -7955,7 +7945,7 @@ module.exports =
           drawingControl: false,
           polygonOptions: {
             fillColor: '#FFFF00',
-            fillOpacity: 0.2,
+            fillOpacity: 0.1,
             strokeWeight: 1,
             strokeColor: '#DD2200',
             clickable: true,
@@ -7970,45 +7960,102 @@ module.exports =
         this.drawingManager.setMap(map);
 
         var _this = this;
-        google.maps.event.addListener(this.drawingManager, 'overlaycomplete', function (event) {
-          //console.log('Overlay complete:', event);
-          console.debug('Overlay complete:', event.overlay.getPath().getArray());
-          var newShape = event.overlay;
-          _this.drawingManager.setDrawingMode(null);
-          //console.log('Overlay complete:', event.overlay.getPaths().getAt(0).getArray(), event.overlay.getPaths().getAt(0).getArray());
-          /*if(event.overlay.getPath().getArray().length <= 2) {
-            _this.handleMapError('This is not a neighbourhood. Remove this and try again...', newShape.getPath().getAt(0));
-            return;
-          }*/
+        google.maps.event.addListener(this.drawingManager, 'overlaycomplete', (function (e) {
+          //console.log('Overlay complete:', e);
+          console.debug('Overlay complete:', e.overlay.getPath().getArray());
+          var newShape = e.overlay;
+          this.drawingManager.setDrawingMode(null);
 
-          _this.validateShapeAndUpdate(newShape);
+          this.validateShapeAndUpdate(newShape);
 
           console.debug('Overlay complete polygon:', newShape);
-          _this.neighbourhood = newShape;
+          this.neighbourhood = newShape;
 
-          google.maps.event.addListener(newShape, 'click', function (event) {
-            console.log('overlay click:', event);
-          });
-          google.maps.event.addListener(newShape.getPath(), 'set_at', function (event) {
-            console.debug('overlay edit set_at:', event, newShape.getPath().getArray());
-            _this.validateShapeAndUpdate(newShape);
-          });
-
-          google.maps.event.addListener(newShape.getPath(), 'insert_at', function (event) {
-            console.log('overlay edit insert_at:', event);
-            _this.validateShapeAndUpdate(newShape);
-          });
-
-          google.maps.event.addListener(newShape.getPath(), 'remove_at', function (event) {
-            console.log('overlay edit remove_at:', event);
-            _this.validateShapeAndUpdate(newShape);
-          });
-          // setSelection(newShape);
-          //});
-        });
+          this.attachEventListenersToOverlayPolygon(newShape, true);
+        }).bind(this));
 
         this.setState({ map: map, infoWindow: infoWindow });
         console.log('Map.componentDidMount end!!!');
+      }
+    }, {
+      key: 'attachEventListenersToOverlayPolygon',
+
+      // ...................
+
+      // supporting methods
+      value: function attachEventListenersToOverlayPolygon(newShape, editable) {
+        var _this2 = this;
+
+        google.maps.event.addListener(newShape, 'click', function (event) {
+          console.log('overlay click:', event);
+        });
+        if (editable) {
+          (function () {
+            var _this = _this2;
+            google.maps.event.addListener(newShape.getPath(), 'set_at', function (event) {
+              console.debug('overlay edit set_at:', event, newShape.getPath().getArray());
+              _this.validateShapeAndUpdate(newShape);
+            });
+
+            google.maps.event.addListener(newShape.getPath(), 'insert_at', function (event) {
+              console.log('overlay edit insert_at:', event);
+              _this.validateShapeAndUpdate(newShape);
+            });
+
+            google.maps.event.addListener(newShape.getPath(), 'remove_at', function (event) {
+              console.log('overlay edit remove_at:', event);
+              _this.validateShapeAndUpdate(newShape);
+            });
+          })();
+        }
+      }
+    }, {
+      key: 'renderExistingNeighbourhoods',
+      value: function renderExistingNeighbourhoods() {
+        var map = this.state.map;
+        if (map) {
+          console.debug('Rendering Existing Neighbourhoods...');
+          _lodash2['default'].forEach(this.state.existingPolygons, function (polygon) {
+            polygon.setMap(map);
+          });
+        }
+      }
+    }, {
+      key: 'onNeighbourhoodStoreChange',
+      value: function onNeighbourhoodStoreChange() {
+        this.loadExistingPolygons();
+      }
+    }, {
+      key: 'loadExistingPolygons',
+      value: function loadExistingPolygons() {
+        var _this3 = this;
+
+        console.log('Map.loadExistingPolygons():');
+
+        var existingPolygons = [];
+        var encodedNeighbourhoods = _storesNeighbourhoodStore2['default'].getNeighbourhoods();
+        var ownNeighbourhood = this.props.user.neighbourhood;
+
+        _lodash2['default'].forEach(encodedNeighbourhoods, (function (encodedNeighbourhood) {
+          console.log('Map.loadExistingPolygons() encodedNeighbourhood:', encodedNeighbourhood, google.maps.geometry);
+          var decodedPath = google.maps.geometry.encoding.decodePath(encodedNeighbourhood.encodedpolygon);
+          console.log('Map.loadExistingPolygons() decodedNeighbourhood:', decodedPath);
+          var userNeighbourhood = ownNeighbourhood && ownNeighbourhood === encodedNeighbourhood._id;
+          var poly = new google.maps.Polygon({
+            paths: decodedPath,
+            strokeColor: '#008888',
+            strokeOpacity: 0.5,
+            strokeWeight: 2,
+            fillColor: userNeighbourhood ? '#00FF00' : '#FF6600',
+            fillOpacity: 0.1,
+            zIndex: 2,
+            editable: userNeighbourhood
+          });
+          _this3.attachEventListenersToOverlayPolygon(poly, userNeighbourhood);
+          existingPolygons.push(poly);
+        }).bind(this));
+
+        this.setState({ existingPolygons: existingPolygons });
       }
     }, {
       key: 'findPolygonCenter',
@@ -8040,7 +8087,6 @@ module.exports =
       key: 'validNeighbourhoodArea',
       value: function validNeighbourhoodArea(newShape) {
         var area = google.maps.geometry.spherical.computeArea(newShape.getPath());
-
         console.log('Map.validNeighbourhoodArea()| area of polygon:', area);
         if (area > 250000 || area < 1000) {
           var centerPos = this.findPolygonCenter(newShape.getPath());
@@ -8054,19 +8100,22 @@ module.exports =
     }, {
       key: 'findIntersectsAndShowError',
       value: function findIntersectsAndShowError(inputShape) {
-        var _this2 = this;
+        var _this4 = this;
 
         var geometry = new _AntykaGeometry2['default']();
-        console.log('findIntersectsAndShowError():');
+        console.log('findIntersectsAndShowError():', inputShape);
         var hasIntersection = false;
         _lodash2['default'].forEach(this.state.existingPolygons, function (existingPolygon) {
-          var intersection = geometry.isIntersectingPolygon(inputShape.getPath(), existingPolygon.getPath());
-          if (intersection) {
-            var pos = new google.maps.LatLng(parseFloat(intersection[0].x), parseFloat(intersection[0].y));
-            console.debug('AMIT:', intersection, pos);
-            _this2.handleMapError('Your neighbourhood can not overlap with existing neighbourhoods, please retry or modify this...', pos);
-            hasIntersection = true;
-            return;
+          console.log('findIntersectsAndShowError():', _lodash2['default'].isEqual(inputShape, existingPolygon));
+          if (!_lodash2['default'].isEqual(inputShape, existingPolygon)) {
+            var intersection = geometry.isIntersectingPolygon(inputShape.getPath(), existingPolygon.getPath());
+            if (intersection) {
+              var pos = new google.maps.LatLng(parseFloat(intersection[0].x), parseFloat(intersection[0].y));
+              console.debug('AMIT:', intersection, pos);
+              _this4.handleMapError('Your neighbourhood can not overlap with existing neighbourhoods, please retry or modify this...', pos);
+              hasIntersection = true;
+              return;
+            }
           }
         });
         return hasIntersection;
@@ -8082,14 +8131,10 @@ module.exports =
         console.log('findSelfIntersectsAndShowError() intersections:', intersections);
 
         if (intersections) {
-          //offenderVertex = offenderVertex ? inputShape.getPath().getArray()[offenderVertex] : inputShape.getPath().getArray()[0];
           var pos = new google.maps.LatLng(parseFloat(intersections[0][0]), parseFloat(intersections[0][1]));
-          console.debug('AMIT:', intersections, pos);
           this.handleMapError('A self interescting polygon can not be a neighbourhood, please retry or modify this...', pos);
           return true;
-          //newShape.setMap(null);
         } else {
-
           var infoWindow = this.state.infoWindow;
           infoWindow.close();
           return false;
@@ -8114,18 +8159,8 @@ module.exports =
     }, {
       key: 'handleLocationError',
       value: function handleLocationError(browserHasGeolocation) {
-
         var msg = browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.';
         this.handleMapError(msg);
-      }
-    }, {
-      key: 'shouldComponentUpdate',
-      value: function shouldComponentUpdate(nextProps, nextStates) {
-        console.log('shouldComponentUpdate() position:', this.props.position, nextProps.position, this.props.position !== nextProps.position);
-        console.log('shouldComponentUpdate() drawMode:', this.props.drawMode, nextProps.drawMode, this.props.drawMode !== nextProps.drawMode);
-        console.log('shouldComponentUpdate() existingPolygons:', this.state.existingPolygons, nextStates.existingPolygons, this.state.existingPolygons !== nextStates.existingPolygons);
-        //return this.props.position !== nextProps.position || this.props.drawMode !== nextProps.drawMode;
-        return this.props.position !== nextProps.position || this.props.drawMode !== nextProps.drawMode || this.state.existingPolygons !== nextStates.existingPolygons;
       }
     }, {
       key: 'findAndSetLocation',
@@ -8165,17 +8200,18 @@ module.exports =
     }, {
       key: 'findCurrentGeoLocation',
       value: function findCurrentGeoLocation() {
-        var _this3 = this;
+        var _this5 = this;
 
-        //let _this = this;
+        var _this = this;
         if (navigator.geolocation) {
           // Try HTML5 geolocation.
           navigator.geolocation.getCurrentPosition(function (position) {
+            console.debug('Map.findCurrentGeoLocation()| Current position:', position);
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
-            _this3.findAndSetLocation(lat, lng, true, 'We\'ve found your location.(lat,long)=(' + lat + ', ' + lng + ')');
+            _this5.findAndSetLocation(lat, lng, true, 'We\'ve found your location.(lat,long)=(' + lat + ', ' + lng + ')');
           }, function () {
-            this.handleLocationError(true);
+            _this.handleLocationError(true);
           });
         } else {
           this.handleLocationError(false);
@@ -8184,7 +8220,7 @@ module.exports =
     }, {
       key: 'render',
       value: function render() {
-        console.log('Map.render()| position:', this.props.position);
+        console.log('Map.render()| props:', this.props);
         console.log('Map.render()| states:', this.state);
 
         //let map = this.state.map;
@@ -8200,6 +8236,7 @@ module.exports =
             this.neighbourhood.setMap(null);
             this.closeInfoWindow();
           }
+
           if (this.props.position && this.props.position.lat && this.props.position.lng) {
             console.log('Map.render()| Has position:', this.props.position.lat, this.props.position.lng);
             this.findAndSetLocation(this.props.position.lat, this.props.position.lng, true);
@@ -8244,7 +8281,7 @@ module.exports =
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _classnames = __webpack_require__(18);
+  var _classnames = __webpack_require__(16);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -8256,7 +8293,7 @@ module.exports =
 
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
 
-  var _servicesAuthService = __webpack_require__(23);
+  var _servicesAuthService = __webpack_require__(22);
 
   var _servicesAuthService2 = _interopRequireDefault(_servicesAuthService);
 
@@ -8355,7 +8392,7 @@ module.exports =
 
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
 
-  var _decoratorsWithAuthentication = __webpack_require__(21);
+  var _decoratorsWithAuthentication = __webpack_require__(20);
 
   var _decoratorsWithAuthentication2 = _interopRequireDefault(_decoratorsWithAuthentication);
 
@@ -8363,7 +8400,7 @@ module.exports =
 
   var _UserMenu2 = _interopRequireDefault(_UserMenu);
 
-  var _TextBox = __webpack_require__(16);
+  var _TextBox = __webpack_require__(18);
 
   var _TextBox2 = _interopRequireDefault(_TextBox);
 
@@ -8557,7 +8594,7 @@ module.exports =
 
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
 
-  var _TextBox = __webpack_require__(16);
+  var _TextBox = __webpack_require__(18);
 
   var _TextBox2 = _interopRequireDefault(_TextBox);
 
@@ -8565,15 +8602,15 @@ module.exports =
 
   var _actionsLoginAction2 = _interopRequireDefault(_actionsLoginAction);
 
-  var _storesLoginStore = __webpack_require__(24);
+  var _storesLoginStore = __webpack_require__(23);
 
   var _storesLoginStore2 = _interopRequireDefault(_storesLoginStore);
 
-  var _servicesAuthService = __webpack_require__(23);
+  var _servicesAuthService = __webpack_require__(22);
 
   var _servicesAuthService2 = _interopRequireDefault(_servicesAuthService);
 
-  var _classnames = __webpack_require__(18);
+  var _classnames = __webpack_require__(16);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -9079,11 +9116,11 @@ module.exports =
 
   var _events2 = _interopRequireDefault(_events);
 
-  var _dispatchersDispatcher = __webpack_require__(22);
+  var _dispatchersDispatcher = __webpack_require__(21);
 
   var _dispatchersDispatcher2 = _interopRequireDefault(_dispatchersDispatcher);
 
-  var _constantsActionTypes = __webpack_require__(20);
+  var _constantsActionTypes = __webpack_require__(19);
 
   var _constantsActionTypes2 = _interopRequireDefault(_constantsActionTypes);
 
@@ -9195,6 +9232,7 @@ module.exports =
         return _this._registerToActions.bind(_this);
       });
       this._neighbourhoods = null;
+      this._searchedNeighbourhood = null;
     }
 
     _createClass(NeighbourhoodStore, [{
@@ -9202,8 +9240,12 @@ module.exports =
       value: function _registerToActions(action) {
         console.log('NeighbourhoodStore._registerToActions()| dispatchToken:', action);
         switch (action.type) {
-          case _constantsNeighbourhoodActionTypes2['default'].FIND_NEIGHBOURHOOD:
+          case _constantsNeighbourhoodActionTypes2['default'].LOAD_NEIGHBOURHOOD:
             this._neighbourhoods = action.neighbourhoods;
+            this.emitChange();
+            break;
+          case _constantsNeighbourhoodActionTypes2['default'].SEARCH_NEIGHBOURHOOD:
+            this._searchedNeighbourhood = action.neighbourhood;
             this.emitChange();
             break;
           default:
@@ -9214,6 +9256,11 @@ module.exports =
       key: 'getNeighbourhoods',
       value: function getNeighbourhoods() {
         return this._neighbourhoods;
+      }
+    }, {
+      key: 'getSearchedNeighbourhood',
+      value: function getSearchedNeighbourhood() {
+        return this._searchedNeighbourhood;
       }
     }]);
 
@@ -9315,7 +9362,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center;font-size:1.125em}.antyka-link-buttondiv{margin-left:80%}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.mappage{width:100%;height:100%;padding-top:60px;padding-bottom:20px}.mappage-floating{position:fixed;padding:20px;top:10%;left:10%;z-index:300;height:auto;width:auto;max-width:310px;min-width:210px;background-color:#DDD;opacity:.7;-webkit-box-shadow:0 3px 15px #333;box-shadow:0 3px 15px #333}.mappage-floating.bottom{top:auto;bottom:5%;padding:2px;max-width:80%;opacity:.7}.mappage-floating.error{color:red;font-weight:600;background-color:#DD6}.mappage-floating input[type=button]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6);margin:3px 0}.mappage-floating input[type=button]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.mappage-floating input[type=button]:disabled{color:#555;background:#ddd}", ""]);
+  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center;font-size:1.125em}.antyka-link-buttondiv{margin-left:80%}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.mappage{width:100%;height:100%;padding-top:60px;padding-bottom:20px}.mappage-floating{position:fixed;padding:20px;top:10%;left:10%;z-index:300;height:auto;width:auto;max-width:310px;min-width:210px;background:rgba(255,255,255,.5);-webkit-box-shadow:0 3px 15px #333;box-shadow:0 3px 15px #333}.mappage-floating.bottom{top:auto;bottom:5%;padding:2px;max-width:80%;opacity:.7}.mappage-floating.error{color:red;font-weight:600;background-color:#DD6}.mappage-floating input[type=button]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6);margin:3px 0}.mappage-floating input[type=button]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.mappage-floating input[type=button]:disabled{color:#555;background:#ddd}", ""]);
 
 /***/ },
 /* 161 */
