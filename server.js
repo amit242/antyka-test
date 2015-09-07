@@ -80,11 +80,11 @@ module.exports =
 
   var _mongoose2 = _interopRequireDefault(_mongoose);
 
-  var _bodyParser = __webpack_require__(175);
+  var _bodyParser = __webpack_require__(179);
 
   var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-  var _cookieParser = __webpack_require__(176);
+  var _cookieParser = __webpack_require__(180);
 
   var _cookieParser2 = _interopRequireDefault(_cookieParser);
 
@@ -139,7 +139,7 @@ module.exports =
 
   var _componentsUserHomePage2 = _interopRequireDefault(_componentsUserHomePage);
 
-  var _nodemailer = __webpack_require__(180);
+  var _nodemailer = __webpack_require__(184);
 
   var _nodemailer2 = _interopRequireDefault(_nodemailer);
 
@@ -879,7 +879,7 @@ module.exports =
 
   var _node_modulesReactLibInvariant2 = _interopRequireDefault(_node_modulesReactLibInvariant);
 
-  var _node_modulesReactLibExecutionEnvironment = __webpack_require__(16);
+  var _node_modulesReactLibExecutionEnvironment = __webpack_require__(17);
 
   var count = 0;
 
@@ -1211,6 +1211,12 @@ module.exports =
 
 /***/ },
 /* 15 */
+/***/ function(module, exports) {
+
+  module.exports = require("classnames");
+
+/***/ },
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
   // 22.1.3.31 Array.prototype[@@unscopables]
@@ -1221,7 +1227,7 @@ module.exports =
   };
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
   /**
@@ -1269,12 +1275,6 @@ module.exports =
 
 
 /***/ },
-/* 17 */
-/***/ function(module, exports) {
-
-  module.exports = require("classnames");
-
-/***/ },
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1314,7 +1314,7 @@ module.exports =
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _classnames = __webpack_require__(17);
+  var _classnames = __webpack_require__(15);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -1334,6 +1334,7 @@ module.exports =
     _createClass(TextBox, [{
       key: 'render',
       value: function render() {
+        console.log('Textbox this.props', this.props);
         return _react2['default'].createElement(
           'div',
           { className: (0, _classnames2['default'])(this.props.className, 'TextBox') },
@@ -1432,7 +1433,7 @@ module.exports =
 
   var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 
-  var _reactLibExecutionEnvironment = __webpack_require__(16);
+  var _reactLibExecutionEnvironment = __webpack_require__(17);
 
   function withAuthentication(ComposedComponent) {
     return (function (_React$Component) {
@@ -2190,7 +2191,7 @@ module.exports =
 
   var _storesLoginStore2 = _interopRequireDefault(_storesLoginStore);
 
-  var _reactLibExecutionEnvironment = __webpack_require__(16);
+  var _reactLibExecutionEnvironment = __webpack_require__(17);
 
   // import Link from '../../utils/Link';
   // import AppActions from '../../actions/AppActions';
@@ -2318,7 +2319,7 @@ module.exports =
 
   var _TextBox2 = _interopRequireDefault(_TextBox);
 
-  var _classnames = __webpack_require__(17);
+  var _classnames = __webpack_require__(15);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -3071,7 +3072,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
   var $          = __webpack_require__(1)
-    , setUnscope = __webpack_require__(15)
+    , setUnscope = __webpack_require__(16)
     , ITER       = __webpack_require__(11).safe('iter')
     , $iter      = __webpack_require__(12)
     , step       = $iter.step
@@ -3279,7 +3280,7 @@ module.exports =
 
   var _LoginPage2 = _interopRequireDefault(_LoginPage);
 
-  var _reactLibExecutionEnvironment = __webpack_require__(16);
+  var _reactLibExecutionEnvironment = __webpack_require__(17);
 
   var _decoratorsWithAuthentication = __webpack_require__(21);
 
@@ -3704,11 +3705,11 @@ module.exports =
 
   var _path2 = _interopRequireDefault(_path);
 
-  var _jade = __webpack_require__(178);
+  var _jade = __webpack_require__(182);
 
   var _jade2 = _interopRequireDefault(_jade);
 
-  var _frontMatter = __webpack_require__(177);
+  var _frontMatter = __webpack_require__(181);
 
   var _frontMatter2 = _interopRequireDefault(_frontMatter);
 
@@ -3800,7 +3801,7 @@ module.exports =
 
   var _events2 = _interopRequireDefault(_events);
 
-  var _node_modulesReactLibExecutionEnvironment = __webpack_require__(16);
+  var _node_modulesReactLibExecutionEnvironment = __webpack_require__(17);
 
   var eventEmitter = undefined;
   var viewport = { width: 1366, height: 768 }; // Default size for server-side rendering
@@ -3908,7 +3909,7 @@ module.exports =
     _createClass(NeighbourhoodService, [{
       key: 'saveNeighbourhood',
       value: function saveNeighbourhood(neighbourhood, userid, errorCb) {
-        console.log('NeighbourhoodService.loadNeighbourhoods()| neighbourhood', neighbourhood);
+        console.log('NeighbourhoodService.saveNeighbourhood()| neighbourhood', neighbourhood);
         var jwt = localStorage.getItem('closyaar-jwt');
 
         _superagent2['default'].post('/api/neighbourhood').type('form').send({
@@ -3928,7 +3929,7 @@ module.exports =
       }
     }, {
       key: 'searchNeighbourhoodById',
-      value: function searchNeighbourhoodById(id, errorCb) {
+      value: function searchNeighbourhoodById(id, successCb, errorCb) {
         console.log('NeighbourhoodService.searchNeighbourhoodById()| neighbourhood', id);
         var jwt = localStorage.getItem('closyaar-jwt');
 
@@ -3940,7 +3941,8 @@ module.exports =
             ///let jwt = response.body.token;
             // We trigger the LoginAction with that JWT.
             // TODO: may want to review this
-            _actionsNeighbourhoodAction2['default'].searchNeighbourhood(response.body.neighbourhoods);
+            successCb(response.body.neighbourhoods[0]);
+            //NeighbourhoodAction.searchNeighbourhood(response.body.neighbourhoods);
             return true;
           } else {
             console.log('NeighbourhoodService.searchNeighbourhoodById()| neighbourhood search failed!!!');
@@ -4601,7 +4603,7 @@ module.exports =
       } return O;
     }
   });
-  __webpack_require__(15)('copyWithin');
+  __webpack_require__(16)('copyWithin');
 
 /***/ },
 /* 82 */
@@ -4623,7 +4625,7 @@ module.exports =
       return O;
     }
   });
-  __webpack_require__(15)('fill');
+  __webpack_require__(16)('fill');
 
 /***/ },
 /* 83 */
@@ -4642,7 +4644,7 @@ module.exports =
       return $find(this, callbackfn, arguments[1]);
     }
   });
-  __webpack_require__(15)(KEY);
+  __webpack_require__(16)(KEY);
 
 /***/ },
 /* 84 */
@@ -4661,7 +4663,7 @@ module.exports =
       return $find(this, callbackfn, arguments[1]);
     }
   });
-  __webpack_require__(15)(KEY);
+  __webpack_require__(16)(KEY);
 
 /***/ },
 /* 85 */
@@ -6002,7 +6004,7 @@ module.exports =
       return $includes(this, el, arguments[1]);
     }
   });
-  __webpack_require__(15)('includes');
+  __webpack_require__(16)('includes');
 
 /***/ },
 /* 115 */
@@ -6925,7 +6927,7 @@ module.exports =
 
   var _superagent2 = _interopRequireDefault(_superagent);
 
-  var _reactLibExecutionEnvironment = __webpack_require__(16);
+  var _reactLibExecutionEnvironment = __webpack_require__(17);
 
   var _dispatchersDispatcher = __webpack_require__(22);
 
@@ -7489,7 +7491,7 @@ module.exports =
 
   var _reactRouter = __webpack_require__(10);
 
-  var _classnames = __webpack_require__(17);
+  var _classnames = __webpack_require__(15);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -7645,6 +7647,10 @@ module.exports =
 
   var _MapPageLess2 = _interopRequireDefault(_MapPageLess);
 
+  var _classnames = __webpack_require__(15);
+
+  var _classnames2 = _interopRequireDefault(_classnames);
+
   var _decoratorsWithStyles = __webpack_require__(4);
 
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
@@ -7686,6 +7692,7 @@ module.exports =
 
       _get(Object.getPrototypeOf(_MapPage.prototype), 'constructor', this).call(this);
       this.state = {
+        searchLocation: null,
         lat: '',
         lng: '',
         position: null,
@@ -7698,8 +7705,9 @@ module.exports =
     _createClass(MapPage, [{
       key: 'componentDidMount',
       value: function componentDidMount(rootNode) {
-        console.log('MapPage.componentDidMount()| googleMapLoaded:', googleMapLoaded);
+        console.log('MapPage.componentDidMount()| googleMapLoaded:', googleMapLoaded, this.props.user.address);
         this.checkIfGoogleMapLoaded();
+        if (this.props.user && this.props.user.address) {}
       }
     }, {
       key: 'checkIfGoogleMapLoaded',
@@ -7725,15 +7733,39 @@ module.exports =
     }, {
       key: 'findCurrentLocation',
       value: function findCurrentLocation(event) {
-        this.setState({ position: null });
+        if (this.state.position === null) {
+          // TODO: this is bit hackey way to find current location on each click, need to find a better way
+          this.setState({ position: { lat: null, lng: null } });
+        } else {
+          this.setState({ position: null });
+        }
       }
     }, {
-      key: 'findLocationByAddress',
-      value: function findLocationByAddress(event) {
-        var geocoder = new google.maps.Geocoder();
-        console.debug('findLocationByAddress:', this.state.address);
+      key: 'findLocationByUserAddress',
+      value: function findLocationByUserAddress(event) {
+        console.debug('findLocationByUserAddress:', this.props.user.address);
         var _this = this;
-        geocoder.geocode({ address: this.state.address }, function (results, status) {
+        if (this.props.user.neighbourhood) {
+          _servicesNeighbourhoodService2['default'].searchNeighbourhoodById(this.props.user.neighbourhood, function (neighbourhood) {
+            console.log('MapPage.findLocationByUserAddress()| success callback:', neighbourhood);
+            _this.setState({ position: neighbourhood.neighbourhoodCenter });
+          });
+        } else {
+          this.findLocation(this.props.user.address);
+        }
+      }
+    }, {
+      key: 'findSearchedLocation',
+      value: function findSearchedLocation(event) {
+        console.debug('findSearchedLocation:', this.state.searchLocation);
+        this.findLocation(this.state.searchLocation);
+      }
+    }, {
+      key: 'findLocation',
+      value: function findLocation(location) {
+        var geocoder = new google.maps.Geocoder();
+        var _this = this;
+        geocoder.geocode({ address: location }, function (results, status) {
 
           if (status == google.maps.GeocoderStatus.OK) {
             console.debug('GEOCODER LOCATION: ', results[0].geometry.location, status);
@@ -7753,24 +7785,43 @@ module.exports =
     }, {
       key: 'drawNeighbourhood',
       value: function drawNeighbourhood(event) {
-        this.setState({ drawMode: !this.state.drawMode });
-        if (this.state.drawMode) {
-          this.setState({ neighbourhood: null });
-        }
+        this.setState({ drawMode: true });
+        //if(this.state.drawMode) {
+        this.setState({ neighbourhood: null });
+        //}
+      }
+    }, {
+      key: 'selectNeighbourhood',
+      value: function selectNeighbourhood(event) {}
+    }, {
+      key: 'discardDrawing',
+      value: function discardDrawing(event) {
+        console.log('MapPage.discardDrawing()|', this.state.neighbourhood);
+        this.setState({ drawMode: false, neighbourhood: null });
+        /*if(this.state.drawMode) {
+          this.setState({neighbourhood: null});
+        }*/
       }
     }, {
       key: 'saveNeighbourhood',
       value: function saveNeighbourhood(event) {
         console.log('saveNeighbourhood()|', this.state.neighbourhood);
-        _servicesNeighbourhoodService2['default'].saveNeighbourhood({ encodedpolygon: this.state.neighbourhood.encodedpolygon }, this.props.user._id, function (error) {
+        _servicesNeighbourhoodService2['default'].saveNeighbourhood({ encodedpolygon: this.state.neighbourhood.encodedpolygon, neighbourhoodCenter: this.state.neighbourhood.neighbourhoodCenter }, this.props.user._id, function (error) {
           alert(error);
         });
       }
     }, {
       key: 'onNeighbourhoodChange',
       value: function onNeighbourhoodChange(event) {
-        console.log('MapPage.onNeighbourhoodChange()|', arguments[0]);
-        this.setState({ neighbourhood: arguments[0] });
+        console.log('MapPage.onNeighbourhoodChange()|', this.state.neighbourhood, arguments[0]);
+        if (this.state.drawMode) {
+          this.setState({ neighbourhood: arguments[0] });
+        }
+      }
+    }, {
+      key: 'toggleMapMenu',
+      value: function toggleMapMenu(event) {
+        this.setState({ menu: !this.state.menu });
       }
     }, {
       key: '_onchange',
@@ -7783,37 +7834,65 @@ module.exports =
         this.setState(controlState);
       }
     }, {
+      key: 'searchTextboxKeyPress',
+      value: function searchTextboxKeyPress(event) {
+        if (event.which === 13) {
+          this.findSearchedLocation(event);
+        }
+      }
+    }, {
       key: 'render',
       value: function render() {
         console.debug('MapPage.render()| state:', this.state);
         console.debug('MapPage.render()| props:', this.props);
         //let title = this.props.user.name;
         this.context.onSetTitle('Map');
+        var addressToolTip = undefined;
+        if (this.props.user.neighbourhood) {
+          addressToolTip = 'Go to my neighbourhood';
+        } else {
+          addressToolTip = 'Go to my address: "' + this.props.user.address + '"';
+        }
         return _react2['default'].createElement(
           'div',
           { className: 'mappage' },
+          _react2['default'].createElement(
+            'div',
+            { className: 'mappage-floating nowrap' },
+            _react2['default'].createElement(
+              'span',
+              { className: 'mappage-floating-icon' },
+              _react2['default'].createElement('img', { className: (0, _classnames2['default'])('icon-medium menu', this.state.menu ? 'selected' : ''), src: __webpack_require__(177), alt: 'Menu', title: 'Menu', onClick: this.toggleMapMenu.bind(this) })
+            ),
+            _react2['default'].createElement('img', { className: 'icon-medium mappage-floating-icon search', src: __webpack_require__(178), alt: 'Search', title: 'Search', onClick: this.findSearchedLocation.bind(this) }),
+            _react2['default'].createElement('img', { className: 'icon-medium mappage-floating-icon map-pin', src: __webpack_require__(175), alt: 'Find Current location', title: 'Find Current location', onClick: this.findCurrentLocation.bind(this) }),
+            _react2['default'].createElement('img', { className: 'icon-medium mappage-floating-icon location', src: __webpack_require__(176), alt: addressToolTip, title: addressToolTip, onClick: this.findLocationByUserAddress.bind(this) }),
+            _react2['default'].createElement(_TextBox2['default'], { className: 'mappage-floating-searchbox', id: 'searchLocation', ref: 'searchLocation', value: this.state.searchedLocation, type: 'text', placeholder: 'Search Location', onChange: this._onchange.bind(this), onKeyDown: this.searchTextboxKeyPress.bind(this) }),
+            this.state.menu && _react2['default'].createElement(
+              'div',
+              null,
+              this.state.drawMode ? _react2['default'].createElement(
+                'div',
+                null,
+                _react2['default'].createElement('input', { type: 'button', value: 'Save Neighbourhood', disabled: !(this.state.neighbourhood && this.state.neighbourhood.isValid), onClick: this.saveNeighbourhood.bind(this) }),
+                _react2['default'].createElement('input', { type: 'button', value: 'Discard', onClick: this.discardDrawing.bind(this) })
+              ) : this.props.user.neighbourhood ? _react2['default'].createElement(
+                'div',
+                null,
+                _react2['default'].createElement('input', { type: 'button', value: 'Update Neighbourhood', onClick: this.drawNeighbourhood.bind(this) }),
+                _react2['default'].createElement('input', { type: 'button', value: 'Leave Neighbourhood', onClick: this.selectNeighbourhood.bind(this) })
+              ) : _react2['default'].createElement(
+                'div',
+                null,
+                _react2['default'].createElement('input', { type: 'button', value: 'Draw Neighbourhood', onClick: this.drawNeighbourhood.bind(this) }),
+                _react2['default'].createElement('input', { type: 'button', value: 'Choose Neighbourhood', onClick: this.selectNeighbourhood.bind(this) })
+              )
+            )
+          ),
           this.state.neighbourhood && !this.state.neighbourhood.isValid && _react2['default'].createElement(
             'span',
             { className: 'mappage-floating bottom error' },
             this.state.neighbourhood.errorMsg
-          ),
-          _react2['default'].createElement(
-            'div',
-            { className: 'mappage-floating' },
-            !this.state.drawMode && _react2['default'].createElement(
-              'div',
-              null,
-              _react2['default'].createElement('input', { type: 'button', value: 'Draw Neighbourhood', onClick: this.drawNeighbourhood.bind(this) }),
-              _react2['default'].createElement('input', { type: 'button', value: 'Find my current location', onClick: this.findCurrentLocation.bind(this) }),
-              _react2['default'].createElement(_TextBox2['default'], { id: 'address', className: 'RegisterPage-textbox', ref: 'address', value: this.state.address, type: 'text', placeholder: 'address', maxLines: 3, onChange: this._onchange.bind(this) }),
-              _react2['default'].createElement('input', { type: 'button', value: 'Find my address', onClick: this.findLocationByAddress.bind(this) })
-            ),
-            this.state.drawMode && _react2['default'].createElement(
-              'div',
-              null,
-              _react2['default'].createElement('input', { type: 'button', value: 'Remove drawing and start over', disabled: !this.state.neighbourhood, onClick: this.drawNeighbourhood.bind(this) }),
-              _react2['default'].createElement('input', { type: 'button', value: 'Save Neighbourhood', disabled: !(this.state.neighbourhood && this.state.neighbourhood.isValid), onClick: this.saveNeighbourhood.bind(this) })
-            )
           ),
           this.state.googleMapLoaded && _react2['default'].createElement(_Map2['default'], _extends({}, this.props, { position: this.state.position, drawMode: this.state.drawMode, onNeighbourhoodChange: this.onNeighbourhoodChange.bind(this) }))
         );
@@ -7828,6 +7907,9 @@ module.exports =
 
   exports['default'] = MapPage;
   module.exports = exports['default'];
+
+  //this.setState({address: this.props.user.address});
+  //this.findLocationByAddress();
   /*<TextBox id="lat" className="mappage-TextBox" ref="lat" value={this.state.lat} type="text" placeholder="Latitude" onChange={this._onchange.bind(this)} />
   <TextBox id="lng"className="mappage-TextBox" ref="lng" value={this.state.lng} type="text" placeholder="Longitude" onChange={this._onchange.bind(this)} />
   <input type="button" value="Find Location" onClick={this.findLocation.bind(this)} />*/
@@ -7848,7 +7930,7 @@ module.exports =
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-  var _jsts = __webpack_require__(179);
+  var _jsts = __webpack_require__(183);
 
   var _jsts2 = _interopRequireDefault(_jsts);
 
@@ -7964,7 +8046,7 @@ module.exports =
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _classnames = __webpack_require__(17);
+  var _classnames = __webpack_require__(15);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -8003,7 +8085,7 @@ module.exports =
       key: 'propTypes',
       value: {
         position: _react.PropTypes.instanceOf(Object),
-        drawMode: _react.PropTypes.bool.isRequired,
+        drawMode: _react.PropTypes.bool,
         onNeighbourhoodChange: _react2['default'].PropTypes.func.isRequired,
         className: _react.PropTypes.string
       },
@@ -8040,6 +8122,16 @@ module.exports =
         console.log('shouldComponentUpdate() existingPolygons:', this.state.existingPolygons, nextStates.existingPolygons, this.state.existingPolygons !== nextStates.existingPolygons);
         //return this.props.position !== nextProps.position || this.props.drawMode !== nextProps.drawMode;
         // TODO: need a more gracefull way to do this
+
+        if (!nextProps.drawMode) {
+          console.log('discard mode:', nextProps.drawMode);
+          this.drawingManager.setDrawingMode(null);
+          /*if(this.neighbourhood) {
+            console.log('discard mode2');
+            this.neighbourhood.setMap(null);
+            this.closeInfoWindow();
+          }*/
+        }
         return !_lodash2['default'].isEqual(this.props.position, nextProps.position) || this.props.drawMode !== nextProps.drawMode || this.state.existingPolygons !== nextStates.existingPolygons;
       }
     }, {
@@ -8066,6 +8158,10 @@ module.exports =
           center: { lat: -34.397, lng: 150.644 },
           zoom: 15,
           zoomControl: true,
+          panControl: true,
+          panControlOptions: {
+            position: google.maps.ControlPosition.RIGHT_BOTTOM
+          },
           zoomControlOptions: {
             style: google.maps.ZoomControlStyle.LARGE,
             position: google.maps.ControlPosition.RIGHT_TOP
@@ -8106,6 +8202,7 @@ module.exports =
         google.maps.event.addListener(this.drawingManager, 'overlaycomplete', (function (e) {
           //console.log('Overlay complete:', e);
           console.debug('Overlay complete:', e.overlay.getPath().getArray());
+          console.debug('Overlay complete:', this.props);
           var newShape = e.overlay;
           this.drawingManager.setDrawingMode(null);
 
@@ -8223,6 +8320,9 @@ module.exports =
         var changed = { isValid: isValid, encodedpolygon: encodedPath };
         if (!isValid) {
           changed.errorMsg = this.state.infoWindow.getContent();
+        } else {
+          var centerPos = this.findPolygonCenter(newShape.getPath());
+          changed.neighbourhoodCenter = { lat: centerPos.lat(), lng: centerPos.lng() };
         }
         this.props.onNeighbourhoodChange(changed);
       }
@@ -8233,8 +8333,7 @@ module.exports =
         console.log('Map.validNeighbourhoodArea()| area of polygon:', area);
         if (area > 250000 || area < 1000) {
           var centerPos = this.findPolygonCenter(newShape.getPath());
-          var pos = new google.maps.LatLng(parseFloat(centerPos[0]), parseFloat(centerPos[1]));
-          console.log('Map.validNeighbourhoodArea()| center of polygon:', centerPos, pos);
+          console.log('Map.validNeighbourhoodArea()| center of polygon:', centerPos);
           this.handleMapError('Neighbourhood area must be between 1000 and 250000 sq meters, your drawing area: ' + area + ' sq meters', centerPos);
           return false;
         }
@@ -8379,7 +8478,6 @@ module.exports =
             this.neighbourhood.setMap(null);
             this.closeInfoWindow();
           }
-
           if (this.props.position && this.props.position.lat && this.props.position.lng) {
             console.log('Map.render()| Has position:', this.props.position.lat, this.props.position.lng);
             this.findAndSetLocation(this.props.position.lat, this.props.position.lng, true);
@@ -8424,7 +8522,7 @@ module.exports =
 
   var _react2 = _interopRequireDefault(_react);
 
-  var _classnames = __webpack_require__(17);
+  var _classnames = __webpack_require__(15);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -8753,7 +8851,7 @@ module.exports =
 
   var _servicesAuthService2 = _interopRequireDefault(_servicesAuthService);
 
-  var _classnames = __webpack_require__(17);
+  var _classnames = __webpack_require__(15);
 
   var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -9067,13 +9165,17 @@ module.exports =
 
   // set up a mongoose model and pass it using module.exports
   module.exports = _mongoose2['default'].model('neighbourhood', new Schema({
-      encodedpolygon: String,
-      verified: Boolean,
-      neighbourCount: Number,
-      createdby: { type: Schema.Types.ObjectId, ref: 'user' },
-      adjoiningNeighbourhoods: [{
-          _id: { type: Schema.Types.ObjectId, ref: 'neighbourhood' }
-      }]
+    encodedpolygon: String,
+    neighbourhoodCenter: {
+      lat: Number,
+      lng: Number
+    },
+    verified: Boolean,
+    neighbourCount: Number,
+    createdby: { type: Schema.Types.ObjectId, ref: 'user' },
+    adjoiningNeighbourhoods: [{
+      _id: { type: Schema.Types.ObjectId, ref: 'neighbourhood' }
+    }]
   }), 'neighbourhood');
 
 /***/ },
@@ -9463,56 +9565,56 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, "/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */img,legend{border:0}pre,textarea{overflow:auto}legend,td,th{padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}.hide,[hidden],template{display:none}audio:not([controls]){display:none;height:0}a{background-color:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,optgroup,strong{font-weight:700}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type=checkbox],input[type=radio]{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:0}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{height:auto}input[type=search]{-webkit-appearance:textfield;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}textarea{resize:vertical}table{border-collapse:collapse;border-spacing:0}/*! React Starter Kit | MIT License | http://www.reactstarterkit.com/ */.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}fieldset,hr{padding:0;border:0}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.bottom{bottom:0}#app,.app-container,body,html{height:100%;margin:0;padding:0;width:100%}body{overflow-y:auto;overflow-x:hidden}html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;color:#222;font-weight:100;font-size:1em;font-family:'Segoe UI',HelveticaNeue-Light,sans-serif;line-height:1.375}::-moz-selection{background:#b3d4fc;text-shadow:none}::selection{background:#b3d4fc;text-shadow:none}hr{display:block;height:1px;border-top:1px solid #ccc;margin:1em 0}audio,canvas,iframe,img,svg,video{vertical-align:middle}fieldset{margin:0}.browserupgrade{margin:.2em 0;background:#ccc;color:#000;padding:.2em 0}@media print{blockquote,img,pre,tr{page-break-inside:avoid}*,:after,:before{background:0 0!important;color:#000!important;-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}a,a:visited{text-decoration:underline}a[href]:after{content:\" (\" attr(href) \")\"}abbr[title]:after{content:\" (\" attr(title) \")\"}a[href^=\"#\"]:after,a[href^=\"javascript:\"]:after{content:\"\"}blockquote,pre{border:1px solid #999}thead{display:table-header-group}img{max-width:100%!important}h2,h3,p{orphans:3;widows:3}h2,h3{page-break-after:avoid}}", ""]);
+  exports.push([module.id, "/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */img,legend{border:0}pre,textarea{overflow:auto}legend,td,th{padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}.hide,[hidden],template{display:none}audio:not([controls]){display:none;height:0}a{background-color:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,optgroup,strong{font-weight:700}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type=checkbox],input[type=radio]{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:0}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{height:auto}input[type=search]{-webkit-appearance:textfield;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}textarea{resize:vertical}table{border-collapse:collapse;border-spacing:0}/*! React Starter Kit | MIT License | http://www.reactstarterkit.com/ */.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}fieldset,hr{padding:0;border:0}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}#app,.app-container,body,html{height:100%;margin:0;padding:0;width:100%}body{overflow-y:auto;overflow-x:hidden}html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;color:#222;font-weight:100;font-size:1em;font-family:'Segoe UI',HelveticaNeue-Light,sans-serif;line-height:1.375}::-moz-selection{background:#b3d4fc;text-shadow:none}::selection{background:#b3d4fc;text-shadow:none}hr{display:block;height:1px;border-top:1px solid #ccc;margin:1em 0}audio,canvas,iframe,img,svg,video{vertical-align:middle}fieldset{margin:0}.browserupgrade{margin:.2em 0;background:#ccc;color:#000;padding:.2em 0}@media print{blockquote,img,pre,tr{page-break-inside:avoid}*,:after,:before{background:0 0!important;color:#000!important;-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}a,a:visited{text-decoration:underline}a[href]:after{content:\" (\" attr(href) \")\"}abbr[title]:after{content:\" (\" attr(title) \")\"}a[href^=\"#\"]:after,a[href^=\"javascript:\"]:after{content:\"\"}blockquote,pre{border:1px solid #999}thead{display:table-header-group}img{max-width:100%!important}h2,h3,p{orphans:3;widows:3}h2,h3{page-break-after:avoid}}", ""]);
 
 /***/ },
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.feedback{width:100%;background:#ddd;color:#555;position:fixed;bottom:20px;height:18px;z-index:1000;-webkit-box-shadow:0 3px 15px #333;box-shadow:0 3px 15px #333}.feedback-container{width:100%;text-align:center;font-size:.9em}.feedback-link,.feedback-link:active,.feedback-link:hover,.feedback-link:visited{color:#555;text-decoration:none}.feedback-link:hover{text-decoration:underline}.feedback-spacer{padding-right:15px;padding-left:15px}", ""]);
+  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.feedback{width:100%;background:#ddd;color:#555;position:fixed;bottom:20px;height:18px;z-index:1000;-webkit-box-shadow:0 3px 15px #333;box-shadow:0 3px 15px #333}.feedback-container{width:100%;text-align:center;font-size:.9em}.feedback-link,.feedback-link:active,.feedback-link:hover,.feedback-link:visited{color:#555;text-decoration:none}.feedback-link:hover{text-decoration:underline}.feedback-spacer{padding-right:15px;padding-left:15px}", ""]);
 
 /***/ },
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".Footer,.bottom{bottom:0}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.Footer{width:100%;background:#333;color:#fff;position:fixed;height:20px;z-index:1000}.Footer-container{width:100%;text-align:center}.Footer-text{color:rgba(255,255,255,.5)}.Footer-spacer,.Footer-text--muted{color:rgba(255,255,255,.3)}.Footer-link,.Footer-text{padding:2px 5px;font-size:1em}.Footer-link,.Footer-link:active,.Footer-link:visited{color:rgba(255,255,255,.6);text-decoration:none}.Footer-link:hover{color:#fff}", ""]);
+  exports.push([module.id, ".Footer,.bottom{bottom:0}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.Footer{width:100%;background:#333;color:#fff;position:fixed;height:20px;z-index:1000}.Footer-container{width:100%;text-align:center}.Footer-text{color:rgba(255,255,255,.5)}.Footer-spacer,.Footer-text--muted{color:rgba(255,255,255,.3)}.Footer-link,.Footer-text{padding:2px 5px;font-size:1em}.Footer-link,.Footer-link:active,.Footer-link:visited{color:rgba(255,255,255,.6);text-decoration:none}.Footer-link:hover{color:#fff}", ""]);
 
 /***/ },
 /* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".Header-container,.page-margin{margin-left:auto;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px}.hide{display:none}.bottom{bottom:0}.Header{width:100%;background:#22426d;color:#fff;position:fixed;z-index:1000;top:0;height:63px;-webkit-box-shadow:0 3px 15px #333;box-shadow:0 3px 15px #333}.Header-container{width:auto;min-width:300px;max-width:1000px}.Header-brand{float:left;color:#93e6fc;text-decoration:none;font-size:1.75em}.Header-brandImg{height:50px;width:91px}.Header-brandTxt{margin-left:10px;font-family:cursive}.Header-nav{float:right}.Header-banner{text-align:center}.Header-bannerTitle{margin:0;padding:10px;font-weight:400;font-size:4em;line-height:1em}.Header-bannerDesc{padding:0;color:rgba(255,255,255,.5);font-size:1.25em;margin:0}", ""]);
+  exports.push([module.id, ".Header-container,.page-margin{margin-left:auto;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.Header{width:100%;background:#22426d;color:#fff;position:fixed;z-index:1000;top:0;height:63px;-webkit-box-shadow:0 3px 15px #333;box-shadow:0 3px 15px #333}.Header-container{width:auto;min-width:300px;max-width:1000px}.Header-brand{float:left;color:#93e6fc;text-decoration:none;font-size:1.75em}.Header-brandImg{height:50px;width:91px}.Header-brandTxt{margin-left:10px;font-family:cursive}.Header-nav{float:right}.Header-banner{text-align:center}.Header-bannerTitle{margin:0;padding:10px;font-weight:400;font-size:4em;line-height:1em}.Header-bannerDesc{padding:0;color:rgba(255,255,255,.5);font-size:1.25em;margin:0}", ""]);
 
 /***/ },
 /* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".loading,.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.content-width{width:100%}.loading,.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.hide{display:none}.bottom{bottom:0}.loading-image{height:128px;width:128px;margin-left:50%}", ""]);
+  exports.push([module.id, ".loading,.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.loading{width:1000px}.loading-image{height:128px;width:128px;margin-left:50%}", ""]);
 
 /***/ },
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".LoginPage,.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.content-width{width:100%}.LoginPage,.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.hide{display:none}.bottom{bottom:0}.LoginPage .Login,.LoginPage .Register{float:right;margin-top:50px}", ""]);
+  exports.push([module.id, ".LoginPage,.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.LoginPage{width:1000px}.LoginPage .Login,.LoginPage .Register{float:right;margin-top:50px}", ""]);
 
 /***/ },
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".antyka-button,.antyka-link-button{font-size:1.125em}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.Login-linkdiv,.antyka-link-buttondiv{margin-left:80%}.hide{display:none}.Login-link,.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center}.bottom{bottom:0}.antyka-button{color:#fff;border:none;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.Login-container{padding:20px;min-width:300px;border:2px solid #789}.Login input{color:#000}.Login-error{color:#d04;font-size:15px;padding-left:10px}.Login-spacer{line-height:40px;text-align:center;vertical-align:middle;color:#55f}.Login-helper{color:#00f;padding:10px;font-size:12px}.Login-helper input{vertical-align:bottom}.Login-helper-forgot{float:right;color:#00f}.Login input[type=submit]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.Login input[type=submit]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.Login input[type=submit]:disabled{color:#555}.Login-link{font-size:1.125em}.Login-link,.Login-link-highlight,.Login-link:active{color:#fff;background:rgba(0,0,255,.6)}.Login-link-highlight:hover,.Login-link:active:hover,.Login-link:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}", ""]);
+  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.Login-linkdiv,.antyka-link-buttondiv{margin-left:80%}.hide{display:none}.Login-link,.antyka-link-button{display:inline-block;text-decoration:none;text-align:center}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;font-size:1.125em}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.Login-container{padding:20px;min-width:300px;border:2px solid #789}.Login input{color:#000}.Login-error{color:#d04;font-size:15px;padding-left:10px}.Login-spacer{line-height:40px;text-align:center;vertical-align:middle;color:#55f}.Login-helper{color:#00f;padding:10px;font-size:12px}.Login-helper input{vertical-align:bottom}.Login-helper-forgot{float:right;color:#00f}.Login input[type=submit]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.Login input[type=submit]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.Login input[type=submit]:disabled{color:#555}.Login-link{width:100%;font-size:1.125em}.Login-link,.Login-link-highlight,.Login-link:active{color:#fff;background:rgba(0,0,255,.6)}.Login-link-highlight:hover,.Login-link:active:hover,.Login-link:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}", ""]);
 
 /***/ },
 /* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center;font-size:1.125em}.antyka-link-buttondiv{margin-left:80%}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.mappage{width:100%;height:100%;padding-top:60px;padding-bottom:20px}.mappage-floating{position:fixed;padding:20px;top:10%;left:10%;z-index:300;height:auto;width:auto;max-width:310px;min-width:210px;background:rgba(255,255,255,.5);-webkit-box-shadow:0 3px 15px #333;box-shadow:0 3px 15px #333}.mappage-floating.bottom{top:auto;bottom:5%;padding:2px;max-width:80%;opacity:.7}.mappage-floating.error{color:red;font-weight:600;background-color:#DD6}.mappage-floating input[type=button]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6);margin:3px 0}.mappage-floating input[type=button]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.mappage-floating input[type=button]:disabled{color:#555;background:#ddd}", ""]);
+  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center;font-size:1.125em}.antyka-link-buttondiv{margin-left:80%}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.mappage{width:100%;height:100%;padding-top:60px;padding-bottom:20px}.mappage-floating{position:fixed;padding:5px;top:10%;left:3%;z-index:300;height:auto;width:420px;background:rgba(255,255,255,.5);-webkit-box-shadow:0 3px 15px #333;box-shadow:0 3px 15px #333}.mappage-floating-searchbox{left:30px;position:relative;width:300px}.mappage-floating.bottom{top:auto;bottom:5%;padding:2px;max-width:80%;opacity:.7}.mappage-floating.error{color:red;font-weight:600;background-color:#DD6}.mappage-floating img.menu{position:absolute}.mappage-floating img.selected{border-width:1px;border-style:inset;background-color:#CCC}.mappage-floating-icon{padding:12px 0;position:absolute}.mappage-floating-icon.search{left:345px}.mappage-floating-icon.map-pin{left:370px}.mappage-floating-icon.location{left:395px}.mappage-floating input[type=button]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6);margin:3px 0}.mappage-floating input[type=button]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.mappage-floating input[type=button]:disabled{color:#555;background:#ddd}.mappage .expand{top:30%}", ""]);
 
 /***/ },
 /* 163 */
@@ -9533,7 +9635,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".neighbourhood,.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.hide{display:none}.bottom{bottom:0}.neighbourhood{width:1000px}.neighbourhood-container{background-color:#CCC;float:left;width:740px;height:100%}", ""]);
+  exports.push([module.id, ".neighbourhood,.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.neighbourhood{width:1000px}.neighbourhood-container{background-color:#CCC;float:left;width:740px;height:100%}", ""]);
 
 /***/ },
 /* 166 */
@@ -9547,14 +9649,14 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center;font-size:1.125em}.antyka-link-buttondiv{margin-left:80%}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.RegisterPage-container{padding:20px;min-width:300px;border:2px solid #789;color:#000}.RegisterPage-container input[type=submit]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.RegisterPage-container input[type=submit]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.RegisterPage-container input[type=submit]:disabled{color:#555}.RegisterPage-container a{color:#00f}.RegisterPage-error{color:#C12}", ""]);
+  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center;font-size:1.125em}.antyka-link-buttondiv{margin-left:80%}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.RegisterPage-container{padding:20px;min-width:300px;border:2px solid #789;color:#000}.RegisterPage-container input[type=submit]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.RegisterPage-container input[type=submit]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.RegisterPage-container input[type=submit]:disabled{color:#555}.RegisterPage-container a{color:#00f}.RegisterPage-error{color:#C12}", ""]);
 
 /***/ },
 /* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".SetPassword,.page-margin{position:static;padding-top:75px;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{margin-left:auto}.hide{display:none}.bottom{bottom:0}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center;font-size:1.125em}.antyka-link-buttondiv{margin-left:80%}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.SetPassword{width:1000px;margin-left:auto;float:left}.SetPassword-container{border:2px solid #789;width:400px;color:#000;margin:50px;padding:20px 20px 50px}.SetPassword-error{margin:100px;color:red;font-size:25px}.SetPassword-success{margin:100px;color:green;font-size:25px}.SetPassword-textbox-error{border:2px solid #911}.SetPassword input[type=submit]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.SetPassword input[type=submit]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.SetPassword input[type=submit]:disabled{color:#555}", ""]);
+  exports.push([module.id, ".SetPassword,.page-margin{position:static;padding-top:75px;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{margin-left:auto}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.antyka-button{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.antyka-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.antyka-button:disabled{color:#555}.antyka-link-button{width:100%;display:inline-block;text-decoration:none;text-align:center;font-size:1.125em}.antyka-link-buttondiv{margin-left:80%}.antyka-link-button,.antyka-link-button-highlight,.antyka-link-button:active{color:#fff;background:rgba(0,0,255,.6)}.antyka-link-button-highlight:hover,.antyka-link-button:active:hover,.antyka-link-button:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F;box-shadow:0 0 5px #00F}.SetPassword{width:1000px;margin-left:auto;float:left}.SetPassword-container{border:2px solid #789;width:400px;color:#000;margin:50px;padding:20px 20px 50px}.SetPassword-error{margin:100px;color:red;font-size:25px}.SetPassword-success{margin:100px;color:green;font-size:25px}.SetPassword-textbox-error{border:2px solid #911}.SetPassword input[type=submit]{color:#fff;border:none;font-size:1.125em;width:100%;float:left;background:rgba(0,0,255,.6)}.SetPassword input[type=submit]:hover{background:rgba(0,0,255,.9);-webkit-box-shadow:0 0 5px #00F}.SetPassword input[type=submit]:disabled{color:#555}", ""]);
 
 /***/ },
 /* 169 */
@@ -9568,14 +9670,14 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".page-margin,.userhome{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.hide{display:none}.bottom{bottom:0}.userhome{width:100%;width:1000px}.userhome-container{width:740px;float:left;background-color:#FFB}", ""]);
+  exports.push([module.id, ".page-margin,.userhome{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.userhome{width:100%;width:1000px}.userhome-container{width:740px;float:left;background-color:#FFB}", ""]);
 
 /***/ },
 /* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(5)();
-  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.usermenu{float:left;width:250px}.usermenu ul{list-style-type:none;width:100%;padding:0;margin:0 10px 0 0}.usermenu ul li{margin:.8em 0;padding-right:30px}.usermenu-link{width:100%;display:inline-block;text-decoration:none;text-align:left;font-size:1.125em}.usermenu-link,.usermenu-link-highlight,.usermenu-link:active{color:#000;background:rgba(255,255,255,.6)}.usermenu-link-highlight:hover,.usermenu-link:active:hover,.usermenu-link:hover{background:rgba(240,240,255,.9);-webkit-box-shadow:0 0 5px #555;box-shadow:0 0 5px #555}", ""]);
+  exports.push([module.id, ".content-width{width:100%}.page-margin,.page-width{width:1000px}.box-border{border:2px solid #789}.page-margin{position:static;padding-top:75px;margin-left:auto;margin-right:auto}.hide{display:none}.bottom{bottom:0}.icon-medium{height:25px;width:25px;cursor:pointer}.nowrap{white-space:nowrap}.usermenu{float:left;width:250px}.usermenu ul{list-style-type:none;width:100%;padding:0;margin:0 10px 0 0}.usermenu ul li{margin:.8em 0;padding-right:30px}.usermenu-link{width:100%;display:inline-block;text-decoration:none;text-align:left;font-size:1.125em}.usermenu-link,.usermenu-link-highlight,.usermenu-link:active{color:#000;background:rgba(255,255,255,.6)}.usermenu-link-highlight:hover,.usermenu-link:active:hover,.usermenu-link:hover{background:rgba(240,240,255,.9);-webkit-box-shadow:0 0 5px #555;box-shadow:0 0 5px #555}", ""]);
 
 /***/ },
 /* 172 */
@@ -9629,36 +9731,60 @@ module.exports =
 
 /***/ },
 /* 175 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-  module.exports = require("body-parser");
+  module.exports = __webpack_require__.p + "3c91398bf78637d63828781100dd476d.png"
 
 /***/ },
 /* 176 */
 /***/ function(module, exports) {
 
-  module.exports = require("cookie-parser");
+  module.exports = "data:image/png;base64,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"
 
 /***/ },
 /* 177 */
 /***/ function(module, exports) {
 
-  module.exports = require("front-matter");
+  module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgYmFzZVByb2ZpbGU9InRpbnkiIGhlaWdodD0iMjRweCIgaWQ9IkxheWVyXzEiIHZlcnNpb249IjEuMiIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PHBhdGggZD0iTTE5LDE3SDVjLTEuMTAzLDAtMiwwLjg5Ny0yLDJzMC44OTcsMiwyLDJoMTRjMS4xMDMsMCwyLTAuODk3LDItMlMyMC4xMDMsMTcsMTksMTd6Ii8+PHBhdGggZD0iTTE5LDEwSDVjLTEuMTAzLDAtMiwwLjg5Ny0yLDJzMC44OTcsMiwyLDJoMTRjMS4xMDMsMCwyLTAuODk3LDItMlMyMC4xMDMsMTAsMTksMTB6Ii8+PHBhdGggZD0iTTE5LDNINUMzLjg5NywzLDMsMy44OTcsMyw1czAuODk3LDIsMiwyaDE0YzEuMTAzLDAsMi0wLjg5NywyLTJTMjAuMTAzLDMsMTksM3oiLz48L3N2Zz4="
 
 /***/ },
 /* 178 */
 /***/ function(module, exports) {
 
-  module.exports = require("jade");
+  module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iMzJweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDMyIDMyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIzMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1NzYgMTkyKSI+PHBhdGggZD0iTS01NDQuODgtMTY1LjEyMWwtNy4zNDItNy4zNDJjLTEuMDk1LDEuNzAxLTIuNTQxLDMuMTQ4LTQuMjQyLDQuMjQybDcuMzQzLDcuMzQyYzEuMTcyLDEuMTcyLDMuMDcxLDEuMTcyLDQuMjQxLDAgICBDLTU0My43MDctMTYyLjA0OC01NDMuNzA3LTE2My45NDctNTQ0Ljg4LTE2NS4xMjF6Ii8+PHBhdGggZD0iTS01NTItMTgwYzAtNi42MjctNS4zNzMtMTItMTItMTJzLTEyLDUuMzczLTEyLDEyczUuMzczLDEyLDEyLDEyUy01NTItMTczLjM3My01NTItMTgweiBNLTU2NC0xNzFjLTQuOTY0LDAtOS00LjAzNi05LTkgICBjMC00Ljk2Myw0LjAzNi05LDktOWM0Ljk2MywwLDksNC4wMzcsOSw5Qy01NTUtMTc1LjAzNi01NTkuMDM3LTE3MS01NjQtMTcxeiIvPjxwYXRoIGQ9Ik0tNTcxLTE4MGgyYzAtMi43NTcsMi4yNDItNSw1LTV2LTJDLTU2Ny44Ni0xODctNTcxLTE4My44NTgtNTcxLTE4MHoiLz48L2c+PC9zdmc+"
 
 /***/ },
 /* 179 */
 /***/ function(module, exports) {
 
-  module.exports = require("jsts");
+  module.exports = require("body-parser");
 
 /***/ },
 /* 180 */
+/***/ function(module, exports) {
+
+  module.exports = require("cookie-parser");
+
+/***/ },
+/* 181 */
+/***/ function(module, exports) {
+
+  module.exports = require("front-matter");
+
+/***/ },
+/* 182 */
+/***/ function(module, exports) {
+
+  module.exports = require("jade");
+
+/***/ },
+/* 183 */
+/***/ function(module, exports) {
+
+  module.exports = require("jsts");
+
+/***/ },
+/* 184 */
 /***/ function(module, exports) {
 
   module.exports = require("nodemailer");
